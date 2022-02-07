@@ -6,10 +6,12 @@ public class EnemySpwaner : MonoBehaviour
 {
     public GameObject zombie;
     public GameObject bigZombie;
+
     private int alreadySpawn = 0;
     private float nextspawn = 0f;
     public float spawnCooldown = 1f;
     private int spawnscnt = 0;
+
     private int[] enemyperwave = {5, 10, 15, 20, 25, 30, 35, 40, 45, 55};
     private List<Transform> SpawnLocations = new List<Transform>();
 
@@ -48,6 +50,6 @@ public class EnemySpwaner : MonoBehaviour
     private void SpawnLocation(GameObject enemyprefab)
     {
         int location = Random.Range(0, spawnscnt);
-        Instantiate(enemyprefab, SpawnLocations[location].position,  new Quaternion(0, 0, 0, 0));
+        GameObject enemy = Instantiate(enemyprefab, SpawnLocations[location].position,  new Quaternion(0, 0, 0, 0));
     }
 }

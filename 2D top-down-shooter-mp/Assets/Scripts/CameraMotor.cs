@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class CameraMotor : MonoBehaviour
+public class CameraMotor : NetworkBehaviour
 {
-    private Transform player;
-
+    public GameObject CameraMountPoint;
     void Start()
     {
-        player = GameObject.Find("Player").transform;
+        if (hasAuthority)
+        {
+            Transform cameraTransform = Camera.main.gameObject.transform;
+            cameraTransform.parent = CameraMountPoint.transform;
+            cameraTransform.position = CameraMountPoint.transform.position;
+            cameraTransform.rotation = CameraMountPoint.transform.rotation;
+            Camera.main.gameObject.SetActive(true);
+        }
     }
 
     void Update()
     {
-        gameObject.transform.position = new Vector3(player.position.x, player.position.y, -10);
+        Camera.main.gameObject.transform.position = new Vector3(CameraMountPoint.transform.position.x, CameraMountPoint.transform.position.y, -10);
+        //Debug.Log(new Vector3(CameraMountPoint.transform.position.x, CameraMountPoint.transform.position.y, -10));
     }
 }

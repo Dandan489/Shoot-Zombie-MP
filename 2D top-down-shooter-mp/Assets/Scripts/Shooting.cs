@@ -23,7 +23,7 @@ public class Shooting : MonoBehaviour
     public int maxWeapon = 1;
 
     private void Start(){
-        player = GameObject.Find("Player").transform;
+        player =gameObject.transform.root;
     }
     
     private void Update(){

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class Player : Fighter
 {
@@ -12,12 +13,14 @@ public class Player : Fighter
     private Camera cam;
 
     private void Start() {
+        if (!isLocalPlayer) return;
         gameObject.transform.position = startingPos;
         rigi = gameObject.GetComponent<Rigidbody2D>();
         cam = Camera.main;
     }
 
     private void Update(){
+        if (!isLocalPlayer) return;
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
@@ -25,6 +28,7 @@ public class Player : Fighter
     }
 
     private void FixedUpdate(){
+        if (!isLocalPlayer) return;
         rigi.MovePosition(rigi.position + movement * moveSpeed * Time.fixedDeltaTime);
 
         Vector2 dire = mousePos - rigi.position;
@@ -35,12 +39,14 @@ public class Player : Fighter
 
     protected override void ReceiveDamage(Damage dmg)
     {
+        if (!isLocalPlayer) return;
         base.ReceiveDamage(dmg);
         GameManager.instance.OnHitpointChange();
     }
 
     protected override void Death()
     {
+        if (!isLocalPlayer) return;
         Debug.Log("Ur dead");
         Application.Quit();
     }

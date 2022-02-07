@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Fighter : MonoBehaviour
+public class Fighter : NetworkBehaviour
 {
     public int health;
     public int max_health;
@@ -19,6 +20,6 @@ public class Fighter : MonoBehaviour
     }
 
     protected virtual void Death(){
-        
+        //left to be override
     }
 }
