@@ -5,7 +5,6 @@ using Mirror;
 
 public class Player : Fighter
 {
-    public static Player instance = null;
     public float moveSpeed = 5f;
     public Vector3 startingPos;
     private Rigidbody2D rigi;
@@ -20,7 +19,6 @@ public class Player : Fighter
         gameObject.transform.position = startingPos;
         rigi = gameObject.GetComponent<Rigidbody2D>();
         cam = Camera.main;
-        instance = this;
     }
 
     public override void OnStartLocalPlayer()
@@ -42,6 +40,12 @@ public class Player : Fighter
         movement.y = Input.GetAxisRaw("Vertical");
 
         mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
+
+        HU.OnHitpointChange();
+        if (health <= 0)
+        {
+            Death();
+        }
     }
 
     private void FixedUpdate(){
@@ -56,17 +60,13 @@ public class Player : Fighter
 
     protected override void ReceiveDamage(Damage dmg)
     {
-        TitleText.instance.Show("get hit1");
         base.ReceiveDamage(dmg);
-        TitleText.instance.Show("get hit2");
         HU.OnHitpointChange();
-        TitleText.instance.Show("get hit3");
     }
 
     protected override void Death()
     {
         if (!isLocalPlayer) return;
-        TitleText.instance.Show("Ur dead");
         downed = true;
         CmdKill_Player();
     }
@@ -81,32 +81,5 @@ public class Player : Fighter
     private void CmdKill_Player()
     {
         GameManager.instance.Kill_Player(gameObject.transform);
-    }
-
-    public void FindTarget(Transform zombie)
-    {
-        CmdFindTarget(zombie);
-    }
-
-    [Command]
-    private void CmdFindTarget(Transform zombie)
-    {
-        float minDistance = float.MaxValue;
-        Transform closestPlayer = null;
-        foreach (Transform player in GameManager.instance.player_transform)
-        {
-            if (Vector2.Distance(zombie.position, player.position) < minDistance)
-            {
-                minDistance = Vector2.Distance(transform.position, player.position);
-                closestPlayer = player;
-            }
-        }
-        RpcSetTarget(closestPlayer, zombie);
-    }
-
-    [ClientRpc]
-    private void RpcSetTarget(Transform player, Transform zombie)
-    {
-        zombie.gameObject.GetComponent<Enemy>().target = player;
     }
 }

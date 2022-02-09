@@ -45,29 +45,27 @@ public class Shooting : NetworkBehaviour
 
     private void Shoot()
     {
+        Shooting player_shoot = gameObject.GetComponent<Shooting>();
+        GameObject bullet = Instantiate(bulletPrefab, player_shoot.firePoint[player_shoot.currentWeapon].position, player_shoot.firePoint[player_shoot.currentWeapon].rotation);
+        NetworkServer.Spawn(bullet);
+        Rigidbody2D rigi = bullet.GetComponent<Rigidbody2D>();
+        rigi.AddForce(player_shoot.firePoint[player_shoot.currentWeapon].up * player_shoot.bulletForce[player_shoot.currentWeapon], ForceMode2D.Impulse);
         HU.ChangeAmmo(-1);
-        CmdShoot(gameObject);
+        CmdServerShoot(gameObject);
+    }
+
+    [Command]
+    private void CmdServerShoot(GameObject player)
+    {
+        Shooting player_shoot = player.GetComponent<Shooting>();
+        GameObject bullet = Instantiate(bulletPrefab, player_shoot.firePoint[player_shoot.currentWeapon].position, player_shoot.firePoint[player_shoot.currentWeapon].rotation);
+        Rigidbody2D rigi = bullet.GetComponent<Rigidbody2D>();
+        rigi.AddForce(player_shoot.firePoint[player_shoot.currentWeapon].up * player_shoot.bulletForce[player_shoot.currentWeapon], ForceMode2D.Impulse);
     }
 
     public void Upgrade()
     {
         CmdUpgrade(gameObject);
-    }
-
-    [Command]
-    private void CmdShoot(GameObject player)
-    {
-        RpcShoot(player);
-    }
-
-    [ClientRpc]
-    private void RpcShoot(GameObject player)
-    {
-        Shooting player_shoot = player.GetComponent<Shooting>();
-        GameObject bullet = Instantiate(bulletPrefab, player_shoot.firePoint[player_shoot.currentWeapon].position, player_shoot.firePoint[player_shoot.currentWeapon].rotation);
-        NetworkServer.Spawn(bullet);
-        Rigidbody2D rigi = bullet.GetComponent<Rigidbody2D>();
-        rigi.AddForce(player_shoot.firePoint[player_shoot.currentWeapon].up * player_shoot.bulletForce[player_shoot.currentWeapon], ForceMode2D.Impulse);
     }
 
     private void Reload()
@@ -90,3 +88,31 @@ public class Shooting : NetworkBehaviour
         player_shoot.weaponlist[player_shoot.currentWeapon].SetActive(true);
     }
 }
+
+/*[Command]
+    private void CmdShoot(GameObject player)
+    {
+        RpcShoot(player);
+        ServerShoot(player);
+    }
+
+    [Server]
+    private void ServerShoot(GameObject player)
+    {
+        Shooting player_shoot = player.GetComponent<Shooting>();
+        GameObject bullet = Instantiate(bulletPrefab, player_shoot.firePoint[player_shoot.currentWeapon].position, player_shoot.firePoint[player_shoot.currentWeapon].rotation);
+        NetworkServer.Spawn(bullet);
+        Rigidbody2D rigi = bullet.GetComponent<Rigidbody2D>();
+        rigi.AddForce(player_shoot.firePoint[player_shoot.currentWeapon].up * player_shoot.bulletForce[player_shoot.currentWeapon], ForceMode2D.Impulse);
+    }
+
+    [ClientRpc]
+    private void RpcShoot(GameObject player)
+    {
+        if (isLocalPlayer) return;
+        Shooting player_shoot = player.GetComponent<Shooting>();
+        GameObject bullet = Instantiate(bulletPrefab, player_shoot.firePoint[player_shoot.currentWeapon].position, player_shoot.firePoint[player_shoot.currentWeapon].rotation);
+        NetworkServer.Spawn(bullet);
+        Rigidbody2D rigi = bullet.GetComponent<Rigidbody2D>();
+        rigi.AddForce(player_shoot.firePoint[player_shoot.currentWeapon].up * player_shoot.bulletForce[player_shoot.currentWeapon], ForceMode2D.Impulse);
+    }*/

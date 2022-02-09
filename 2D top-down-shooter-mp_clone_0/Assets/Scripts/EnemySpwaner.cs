@@ -96,7 +96,8 @@ public class EnemySpwaner : NetworkBehaviour
     {
         yield return new WaitForSeconds(5f);
         Debug.Log("Wave " + wave + " start");
-        TitleText.instance.Show("Wave " + wave);
+        TitleText.instance.RpcShow("Wave " + wave);
+        Debug.Log("bruh");
         ongoingwave = true;
         ongoingwaveupdate = false;
     }

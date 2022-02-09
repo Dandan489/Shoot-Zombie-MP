@@ -19,26 +19,30 @@ public class Enemy : Fighter
     public Transform target;
     NavMeshAgent agent;
 
+    [Server]
     private void Start() {
         nextAttack = Time.time;
         agent = gameObject.GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         rigi = gameObject.GetComponent<Rigidbody2D>();
-        Player.instance.FindTarget(gameObject.transform);
+        FindTarget();
     }
 
+    [Server]
     private void Update(){
-        Player.instance.FindTarget(gameObject.transform);
+        FindTarget();
         agent.SetDestination(target.position);
     }
 
+    [Server]
     private void FixedUpdate() {
         Vector2 dire = new Vector2(target.position.x, target.position.y) - rigi.position;
         float angle = Mathf.Atan2(dire.y, dire.x) * Mathf.Rad2Deg;
         rigi.rotation = angle;
     }
 
+    [Server]
     private void OnCollisionStay2D(Collision2D collision)
     {
         if(collision.collider.tag == "Player" && Time.time >= nextAttack)
@@ -55,6 +59,23 @@ public class Enemy : Fighter
         }
     }
 
+    [Server]
+    private void FindTarget()
+    {
+        float minDistance = float.MaxValue;
+        Transform closestPlayer = null;
+        foreach (Transform player in GameManager.instance.player_transform)
+        {
+            if (Vector2.Distance(transform.position, player.position) < minDistance)
+            {
+                minDistance = Vector2.Distance(transform.position, player.position);
+                closestPlayer = player;
+            }
+        }
+        target = closestPlayer;
+    }
+
+    [Server]
     protected override void Death()
     {
         base.Death();

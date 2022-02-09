@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
-public class TitleText : MonoBehaviour
+public class TitleText : NetworkBehaviour
 {
     public static TitleText instance;
     public TMP_Text txt;
@@ -14,13 +15,20 @@ public class TitleText : MonoBehaviour
 
     private void Awake()
     {
+        txt = GameObject.Find("UniversalCanvas").transform.Find("WaveTitle").GetComponent<TMP_Text>();
         if (instance != null)
         {
             Destroy(gameObject);
             return;
         }
         instance = this;
-        gameObject.SetActive(false);
+        GameObject.Find("UniversalCanvas").transform.Find("WaveTitle").gameObject.SetActive(false);
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        GameObject.Find("UniversalCanvas").transform.Find("WaveTitle").gameObject.SetActive(false);
     }
 
     private void Update()
@@ -31,8 +39,10 @@ public class TitleText : MonoBehaviour
         }
     }
 
-    public void Show(string a)
+    [ClientRpc]
+    public void RpcShow(string a)
     {
+        Debug.Log(a);
         lastShown = Time.time;
         txt.text = a;
         txt.gameObject.SetActive(true);

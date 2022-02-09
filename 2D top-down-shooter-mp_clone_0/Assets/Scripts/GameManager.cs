@@ -21,7 +21,9 @@ public class GameManager : NetworkBehaviour
     }
 
     //player
+    [SyncVar]
     private int playercnt = 0;
+    [SyncVar]
     public List<Transform> player_transform = new List<Transform>();
 
     public void New_Player(Transform player)
@@ -37,6 +39,7 @@ public class GameManager : NetworkBehaviour
         if(playercnt == 0)
         {
             Debug.Log("Game Over");
+            NetworkManager.singleton.StopHost();
         }
     }
 
