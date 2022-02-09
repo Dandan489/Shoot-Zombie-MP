@@ -4,12 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class TitleText:MonoBehaviour
+public class TitleText : MonoBehaviour
 {
+    public static TitleText instance;
     public TMP_Text txt;
     private float lastShown;
     private float duration = 3f;
     private bool active = false;
+
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        gameObject.SetActive(false);
+    }
 
     private void Update()
     {

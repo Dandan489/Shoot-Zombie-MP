@@ -155,8 +155,8 @@ MonoBehaviour:
   score: 1
   coindropup: 6
   coindropdn: 3
-  target: {fileID: 0}
   blood: {fileID: 8471210621797832692, guid: 8884e53150a93c044a92ca83f55f2ba6, type: 3}
+  target: {fileID: 0}
 --- !u!195 &-7911549772530869989
 NavMeshAgent:
   m_ObjectHideFlags: 0

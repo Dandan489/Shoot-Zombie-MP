@@ -10,8 +10,9 @@ public class Enemy : Fighter
     public int score = 1;
     public int coindropup;
     public int coindropdn;
+    [SyncVar]
     private float nextAttack = 0f;
-    private float attackSpeed = 1f;
+    private float attackSpeed = 2f;
     private Rigidbody2D rigi;
     public GameObject blood;
 
@@ -19,15 +20,16 @@ public class Enemy : Fighter
     NavMeshAgent agent;
 
     private void Start() {
+        nextAttack = Time.time;
         agent = gameObject.GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         rigi = gameObject.GetComponent<Rigidbody2D>();
-        FindTarget();
+        Player.instance.FindTarget(gameObject.transform);
     }
 
     private void Update(){
-        FindTarget();
+        Player.instance.FindTarget(gameObject.transform);
         agent.SetDestination(target.position);
     }
 
@@ -35,21 +37,6 @@ public class Enemy : Fighter
         Vector2 dire = new Vector2(target.position.x, target.position.y) - rigi.position;
         float angle = Mathf.Atan2(dire.y, dire.x) * Mathf.Rad2Deg;
         rigi.rotation = angle;
-    }
-    
-    private void FindTarget()
-    {
-        float minDistance = float.MaxValue;
-        Transform closestPlayer = null;
-        foreach (Transform player in GameManager.instance.player_transform)
-        {
-            if (Vector2.Distance(transform.position, player.position) < minDistance)
-            {
-                minDistance = Vector2.Distance(transform.position, player.position);
-                closestPlayer = player;
-            }
-        }
-        target = closestPlayer;
     }
 
     private void OnCollisionStay2D(Collision2D collision)

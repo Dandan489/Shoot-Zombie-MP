@@ -23,7 +23,6 @@ public class EnemySpwaner : NetworkBehaviour
     public int wave = 0;
     public bool ongoingwave = false;
     public bool ongoingwaveupdate = false;
-    public TitleText tt;
 
     private void Awake()
     {
@@ -97,7 +96,7 @@ public class EnemySpwaner : NetworkBehaviour
     {
         yield return new WaitForSeconds(5f);
         Debug.Log("Wave " + wave + " start");
-        tt.Show("Wave " + wave);
+        TitleText.instance.Show("Wave " + wave);
         ongoingwave = true;
         ongoingwaveupdate = false;
     }

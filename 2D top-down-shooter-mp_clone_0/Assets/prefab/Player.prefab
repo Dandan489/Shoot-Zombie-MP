@@ -405,8 +405,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.0001
-  m_LinearDrag: 0
-  m_AngularDrag: 0
+  m_LinearDrag: 10
+  m_AngularDrag: 10
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -426,7 +426,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.004191339, y: -0.071349695}
+  m_Offset: {x: -0.005121708, y: -0.06669307}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -437,7 +437,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.4276537, y: 0.27890655}
+  m_Size: {x: 0.4835348, y: 0.38135386}
   m_EdgeRadius: 0
 --- !u!114 &1035514094308410396
 MonoBehaviour:
@@ -458,6 +458,7 @@ MonoBehaviour:
   moveSpeed: 3
   startingPos: {x: 9.61, y: -3.47, z: 0}
   HU: {fileID: -8477853700340485473}
+  Hud: {fileID: 8699064244553067812}
 --- !u!114 &6309975241512145922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2325,7 +2326,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8699064244553067800
 RectTransform:
   m_ObjectHideFlags: 0

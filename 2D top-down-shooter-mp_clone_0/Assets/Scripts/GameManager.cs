@@ -37,7 +37,6 @@ public class GameManager : NetworkBehaviour
         if(playercnt == 0)
         {
             Debug.Log("Game Over");
-            Application.Quit();
         }
     }
 
